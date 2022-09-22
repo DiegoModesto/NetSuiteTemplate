@@ -7,7 +7,12 @@ define(['../Application/ItemFulfilmentShipped.js'], function (application) {
     function getInputData() {
         try {
             log.audit('Beggin of process')
-            return application.getListOfItemFulfillment()
+
+            let savedSearch = application.getListOfItemFulfillment()
+
+            log.debug('Saved search: ', savedSearch.runPaged({ pageSize: 50 }))
+
+            return savedSearch
         } catch (error) {
             log.error('Error occours: GetInputData', error)
         }
@@ -25,7 +30,9 @@ define(['../Application/ItemFulfilmentShipped.js'], function (application) {
         }
     }
 
-    function summarize(summary) { }
+    function summarize(summary) {
+        log.debug('Summary: Finished process', summary)
+    }
 
     return {
         getInputData: getInputData,

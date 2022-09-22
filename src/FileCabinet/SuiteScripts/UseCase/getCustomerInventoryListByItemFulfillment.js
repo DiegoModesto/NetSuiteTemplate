@@ -52,7 +52,7 @@ define([], function () {
                               SerialNumber: serialNumberId,
                               SalesOrder: salesOrderId,
                               ItemFulfillment: itemFulfillmentId,
-                              Status: statusId,
+                              //Status: statusId,
                               Customer: customerId,
                               BaseCountry: subsidiaryId,
                               SKU: itemId,

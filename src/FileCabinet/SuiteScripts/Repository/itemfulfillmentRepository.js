@@ -4,7 +4,7 @@
 define([
       'N/record',
       'N/search'
-], function (record, search, itemFulfillmentEntity) {
+], function (record, search) {
 
       const searchColumns = [
             search.createColumn({ name: "mainline", label: "*" }),
@@ -27,29 +27,19 @@ define([
       ]
 
       function getListWithFilter(paramFilters) {
-            let savedSearch = search.create({
-                  type: search.Type.TRANSACTION,
-                  filters: [
-                        ["recordtype", "contains", "itemfulfillment"],
-                        'AND',
-                        ["mainline", "is", "F"],
-                        'AND',
-                        ["custbody_wbox_cust_inventory_processed", "is", "F"],
-                        'AND',
-                        ["status", "anyof", "ItemShip:C"]
-                  ],
-                  columns: searchColumns
+            let processedFilters = []
+
+            paramFilters.forEach((item, index) => {
+                  processedFilters.push(item)
+                  if (index === (paramFilters.length - 1)) return
+                  processedFilters.push("AND")
             })
 
-            /*paramFilters.forEach((item, index) => {
-                  savedSearch.filters.push(item)
-                  if (index === (paramFilters.length - 1)) return
-                  savedSearch.filters.push('AND')
-            })*/
-
-            log.debug('SavedSearch', savedSearch)
-
-            return savedSearch
+            return search.create({
+                  type: search.Type.TRANSACTION,
+                  filters: processedFilters,
+                  columns: searchColumns
+            })
       }
 
       function loadById(itemfulfillmentId) {
